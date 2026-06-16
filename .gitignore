@@ -1,0 +1,76 @@
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+
+venv/
+env/
+.venv/
+
+# Distribution / Packaging
+
+build/
+dist/
+*.egg-info/
+
+# IDEs
+
+.vscode/
+.idea/
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Environment Variables
+.env
+.env.*
+
+# AWS Credentials 
+
+.aws/
+credentials
+
+# Reports & Generated Output
+
+reports/*.json
+reports/*.csv
+reports/*.html
+
+# Keep directory structure
+
+!reports/.gitkeep
+
+
+# Logs
+
+logs/
+*.log
+
+# Testing
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+
+.ipynb_checkpoints/
+
+# PyInstaller
+
+*.spec
+
+# AI Assistant Metadata
+
+.claude/
+.refact/
+
+# Misc
+
+*.tmp
+*.bak
+*.swp
