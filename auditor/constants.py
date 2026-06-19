@@ -1,0 +1,2 @@
+MAX_RETRIES = 3
+DEFAULT_REGION = "ap-south-1"
