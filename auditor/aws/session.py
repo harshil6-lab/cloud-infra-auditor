@@ -1,6 +1,6 @@
 import boto3
 
-def create_session(profile_name):
+def create_session(profile_name=None):
     """
     Create boto3 Session.
     """
