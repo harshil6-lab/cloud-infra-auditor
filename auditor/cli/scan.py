@@ -1,7 +1,9 @@
 import typer
 from rich.console import Console
 from rich.table import Table
-from auditor.scanners.ebs_scanner import scan_unattached_volumes
+import time
+
+from auditor.scanners.ebs_scanner import scan_all_regions 
 
 console = Console()
 
@@ -12,12 +14,23 @@ def ebs():
     """
     Scan Unattached EBS Volumes..
     """
+    start_time = time.time()
 
-    volumes = scan_unattached_volumes("ap-south-1")
+    volumes = scan_all_regions()
+    
+    duration = time.time() - start_time
+    
+    findings= volumes["findings"]
+    regions_scanned = volumes["regions_scanned"]
 
-    if not volumes:
+    if not findings:
         console.print("[green]No Unattached EBS volumes Found.[/green]")
-        return 
+        
+        console.print(f"Regions Scanned : {regions_scanned}")
+        console.print(f"Scan Duration : {duration:.2f} sec")
+        return
+
+
     
     table = Table(title="Unattached EBS Volumes")
 
@@ -26,7 +39,10 @@ def ebs():
     table.add_column("State")
     table.add_column("Region")
 
-    for volume in volumes:
+    for volume in findings:
         table.add_row(volume["VolumeId"],str(volume["Size"]),volume["State"],volume["Region"])
     
     console.print(table)
+    console.print(f"[cyan]Regions Scanned : [/cyan] {regions_scanned}")
+    console.print(f"[cyan]Volumes Found   : [/cyan] {len(findings)}")
+    console.print(f"[cyan]Scan Duartion   : [/cyan] {duration:.2f} sec")

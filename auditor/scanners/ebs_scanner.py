@@ -1,5 +1,7 @@
 from auditor.aws.session import create_session
 from auditor.utils.retry import retry_on_throttle
+
+from auditor.aws.regions import get_regions
 def scan_unattached_volumes(region:str):
     """
     Scan for Unattached EBS volumes...
@@ -17,3 +19,16 @@ def scan_unattached_volumes(region:str):
             unattached.append({"VolumeId" : volume["VolumeId"], "Size" : volume["Size"] , "State" : volume["State"] , "Region" : volume["Region"]})
         
     return unattached
+
+def scan_all_regions(profile_name=None):
+    findings = []
+    regions = get_regions(profile_name)
+
+    for region in regions:
+        found_region = scan_unattached_volumes(region)
+        findings.extend(found_region)
+
+    return {
+        "regions_scanned" : len(regions),
+        "findings" : findings   
+    }
