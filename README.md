@@ -7,7 +7,7 @@
 [![Tests](https://img.shields.io/badge/tests-pytest%20%2B%20moto-green.svg)]()
 [![AWS](https://img.shields.io/badge/AWS-boto3-orange.svg)](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
 
----
+----
 
 ## What It Does
 
@@ -26,7 +26,7 @@ Scans AWS accounts for resource waste and surfaces actionable cost-saving recomm
 
 **Execution model:** dry-run by default, confirmation-gated cleanup. Nothing is deleted silently.
 
----
+----
 
 ## Requirements
 
