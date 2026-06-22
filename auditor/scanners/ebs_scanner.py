@@ -20,7 +20,7 @@ def scan_unattached_volumes(region:str):
         
     return unattached
 
-def scan_all_regions(profile_name=None):
+def scan_all_regions_ebs(profile_name=None):
     findings = []
     regions = get_regions(profile_name)
 
