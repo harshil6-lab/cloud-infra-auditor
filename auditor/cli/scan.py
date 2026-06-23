@@ -5,6 +5,7 @@ import time
 
 from auditor.scanners.ebs_scanner import scan_all_regions_ebs
 from auditor.scanners.eip_scanner import scan_all_regions_eip
+from auditor.scanners.ec2_scanner import scan_all_regions_ec2
 console = Console()
 
 scan_app = typer.Typer()
@@ -78,5 +79,39 @@ def eip():
     console.print(table)
     console.print(f"[cyan]Regions Scanned : [/cyan] {regions_scanned}")
     console.print(f"[cyan]Elastic IPs Found : [/cyan] {len(findings)}")
+    console.print(f"[cyan]Scan Duartion : [/cyan] {duration:.2f} sec ")
+
+@scan_app.command()
+def ec2():
+    """
+    Scan Idle EC2 Instances...
+    """
+    start_time = time.time()
+    volumes = scan_all_regions_ec2()
+
+    duration = time.time() - start_time 
+
+    findings = volumes["findings"]
+    regions_scanned = volumes["regions_scanned"]
+
+    if not findings:
+        console.print("[green]No Idle EC2 Instances are Found[/green]")
+        console.print(f"Regions Scanned : {regions_scanned}")
+        console.print(f"Scan Duartion : {duration:.2f}")
+        return 
+
+    table = Table(title = "Idle EC2 Instances")
+
+    table.add_column("Instance ID")
+    table.add_column("Instance Type")
+    table.add_column("State")
+    table.add_column("Region")
+
+    for ec2 in findings:
+        table.add_row(ec2["InstanceId"],ec2["InstanceType"],ec2["State"],ec2["Region"])
+    
+    console.print(table)
+    console.print(f"[cyan]Regions Scanned : [/cyan] {regions_scanned}")
+    console.print(f"[cyan]Idle EC2 Instances Found : [/cyan] {len(findings)}")
     console.print(f"[cyan]Scan Duartion : [/cyan] {duration:.2f} sec ")
 
