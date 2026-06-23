@@ -1,4 +1,5 @@
 import boto3
+from botocore.exceptions import NoCredentialsError
 from auditor.aws.session import create_session
 
 def list_profiles():
