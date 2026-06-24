@@ -6,9 +6,11 @@ import time
 from auditor.scanners.ebs_scanner import scan_all_regions_ebs
 from auditor.scanners.eip_scanner import scan_all_regions_eip
 from auditor.scanners.ec2_scanner import scan_all_regions_ec2
+
 console = Console()
 
 scan_app = typer.Typer()
+
 
 @scan_app.command()
 def ebs():
@@ -18,21 +20,19 @@ def ebs():
     start_time = time.time()
 
     volumes = scan_all_regions_ebs()
-    
+
     duration = time.time() - start_time
-    
-    findings= volumes["findings"]
+
+    findings = volumes["findings"]
     regions_scanned = volumes["regions_scanned"]
 
     if not findings:
         console.print("[green]No Unattached EBS volumes Found.[/green]")
-        
+
         console.print(f"Regions Scanned : {regions_scanned}")
         console.print(f"Scan Duration : {duration:.2f} sec")
         return
 
-
-    
     table = Table(title="Unattached EBS Volumes")
 
     table.add_column("Volume_Id")
@@ -41,12 +41,15 @@ def ebs():
     table.add_column("Region")
 
     for volume in findings:
-        table.add_row(volume["VolumeId"],str(volume["Size"]),volume["State"],volume["Region"])
-    
+        table.add_row(
+            volume["VolumeId"], str(volume["Size"]), volume["State"], volume["Region"]
+        )
+
     console.print(table)
     console.print(f"[cyan]Regions Scanned : [/cyan] {regions_scanned}")
     console.print(f"[cyan]Volumes Found   : [/cyan] {len(findings)}")
     console.print(f"[cyan]Scan Duartion   : [/cyan] {duration:.2f} sec")
+
 
 @scan_app.command()
 def eip():
@@ -56,7 +59,7 @@ def eip():
     start_time = time.time()
     volumes = scan_all_regions_eip()
 
-    duration = time.time() - start_time 
+    duration = time.time() - start_time
 
     findings = volumes["findings"]
     regions_scanned = volumes["regions_scanned"]
@@ -65,21 +68,22 @@ def eip():
         console.print("[green]No Unassociated Elastic IPs Found[/green]")
         console.print(f"Regions Scanned : {regions_scanned}")
         console.print(f"Scan Duartion : {duration:.2f}")
-        return 
+        return
 
-    table = Table(title = "Unassociated Elastic IPs")
+    table = Table(title="Unassociated Elastic IPs")
 
     table.add_column("Public IP")
     table.add_column("Allocation ID")
     table.add_column("Region")
 
     for eip in findings:
-        table.add_row(eip["PublicIp"],eip["AllocationId"],eip["Region"])
-    
+        table.add_row(eip["PublicIp"], eip["AllocationId"], eip["Region"])
+
     console.print(table)
     console.print(f"[cyan]Regions Scanned : [/cyan] {regions_scanned}")
     console.print(f"[cyan]Elastic IPs Found : [/cyan] {len(findings)}")
     console.print(f"[cyan]Scan Duartion : [/cyan] {duration:.2f} sec ")
+
 
 @scan_app.command()
 def ec2():
@@ -89,7 +93,7 @@ def ec2():
     start_time = time.time()
     volumes = scan_all_regions_ec2()
 
-    duration = time.time() - start_time 
+    duration = time.time() - start_time
 
     findings = volumes["findings"]
     regions_scanned = volumes["regions_scanned"]
@@ -98,9 +102,9 @@ def ec2():
         console.print("[green]No Idle EC2 Instances are Found[/green]")
         console.print(f"Regions Scanned : {regions_scanned}")
         console.print(f"Scan Duartion : {duration:.2f}")
-        return 
+        return
 
-    table = Table(title = "Idle EC2 Instances")
+    table = Table(title="Idle EC2 Instances")
 
     table.add_column("Instance ID")
     table.add_column("Instance Type")
@@ -108,10 +112,11 @@ def ec2():
     table.add_column("Region")
 
     for ec2 in findings:
-        table.add_row(ec2["InstanceId"],ec2["InstanceType"],ec2["State"],ec2["Region"])
-    
+        table.add_row(
+            ec2["InstanceId"], ec2["InstanceType"], ec2["State"], ec2["Region"]
+        )
+
     console.print(table)
     console.print(f"[cyan]Regions Scanned : [/cyan] {regions_scanned}")
     console.print(f"[cyan]Idle EC2 Instances Found : [/cyan] {len(findings)}")
     console.print(f"[cyan]Scan Duartion : [/cyan] {duration:.2f} sec ")
-
