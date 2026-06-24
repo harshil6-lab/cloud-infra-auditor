@@ -74,3 +74,16 @@ htmlcov/
 *.tmp
 *.bak
 *.swp
+
+#test_files
+test_all_regions.py
+test_cloudwatch.py
+test_ebs.py
+test_ec2.py
+test_eip.py
+test_idle.py
+test_json_exporter.py
+test_region.py
+test_report.py
+
+

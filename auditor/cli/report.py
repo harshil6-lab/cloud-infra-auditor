@@ -5,6 +5,7 @@ console = Console()
 
 report_app = typer.Typer()
 
+
 @report_app.command()
 def generate():
     """
