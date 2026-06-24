@@ -75,13 +75,15 @@ htmlcov/
 *.bak
 *.swp
 
-#testing files
-all_regions_test.py
-cloudwatch_test.py
-ebs_test.py
-ec2_test.py
-eip_test.py
-idle_test.py
-json_exporter_test.py
+#test_files
+test_all_regions.py
+test_cloudwatch.py
+test_ebs.py
+test_ec2.py
+test_eip.py
+test_idle.py
+test_json_exporter.py
+test_region.py
+test_report.py
 
 
