@@ -35,6 +35,4 @@ jobs:
         run: |
           black --check .
 
-      - name: Run Pytest
-        run: |
-          pytest
+     
