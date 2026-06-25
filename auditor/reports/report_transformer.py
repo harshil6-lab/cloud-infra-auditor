@@ -1,4 +1,4 @@
-from auditor.reports.report_generator import generate_report
+
 RESOURCE_CONFIG = {
     "EC2" : {
         "id_field" : "InstanceId",
