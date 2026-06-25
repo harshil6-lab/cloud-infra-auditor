@@ -85,5 +85,6 @@ test_idle.py
 test_json_exporter.py
 test_region.py
 test_report.py
+test_csv_file.py
 
 
