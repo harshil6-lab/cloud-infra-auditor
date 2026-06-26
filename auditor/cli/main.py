@@ -5,7 +5,6 @@ from auditor.cli.report import report_app
 from auditor.cli.cleanup import cleanup_app
 from auditor.cli.auth import auth_app
 from auditor.cli.aws import aws_app
-from auditor.cli.report import report_app
 
 app = typer.Typer(help="Cloud Infrastructure Auditor & Cost Optimizer")
 

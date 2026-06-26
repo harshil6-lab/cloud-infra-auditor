@@ -49,7 +49,7 @@ def ebs(
         console.print(f"[cyan]Regions Scanned     : [/cyan] {regions}")
         console.print(f"[yellow]Resources Found   :[/yellow] {len(findings)}")
         console.print(f"[yellow]Resources deleted :[/yellow] {0}")
-        console.print(f"[yellow]Action            : Preview only [/yellow]")
+        console.print("[yellow]Action            : Preview only [/yellow]")
 
     if execute:
         report = dry_run_ebs()
@@ -126,7 +126,7 @@ def eip(
         console.print(f"[cyan]Regions Scanned     : [/cyan] {regions}")
         console.print(f"[yellow]Resources Found   :[/yellow] {len(findings)}")
         console.print(f"[yellow]Resources deleted :[/yellow] {0}")
-        console.print(f"[yellow]Action            : Preview only [/yellow]")
+        console.print("[yellow]Action            : Preview only [/yellow]")
 
     if execute:
         report = dry_run_eip()
