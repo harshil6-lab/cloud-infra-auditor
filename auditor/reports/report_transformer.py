@@ -1,3 +1,5 @@
+from datetime import datetime
+
 RESOURCE_CONFIG = {
     "EC2": {"id_field": "InstanceId", "status": "Idle"},
     "EBS": {"id_field": "VolumeId", "status": "Unattached"},
@@ -46,4 +48,12 @@ def transform_report(report):
     ebs = transform_findings(report["ebs"]["findings"], "EBS", build_ebs_details)
     eip = transform_findings(report["eip"]["findings"], "EIP", build_eip_details)
 
-    return {"findings": ec2 + ebs + eip}
+    all_findings = ec2 + ebs + eip
+    return {
+        "generated_at": datetime.now().isoformat(),
+        "summary": {
+            "total_findings": len(all_findings),
+            "resource_counts": {"EC2": len(ec2), "EBS": len(ebs), "EIP": len(eip)},
+        },
+        "findings": all_findings,
+    }
