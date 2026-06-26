@@ -23,7 +23,7 @@ def scan_unattached_volumes(region: str):
                     "VolumeId": volume["VolumeId"],
                     "Size": volume["Size"],
                     "State": volume["State"],
-                    "Region": volume["Region"],
+                    "Region": region,
                 }
             )
 
