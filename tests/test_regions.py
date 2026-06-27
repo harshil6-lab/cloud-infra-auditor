@@ -1,6 +1,4 @@
 from moto import mock_aws
-import boto3
-
 from auditor.aws.regions import get_regions
 
 
