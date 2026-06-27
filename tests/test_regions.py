@@ -7,8 +7,6 @@ from auditor.aws.regions import get_regions
 @mock_aws
 def test_get_regions_returns_list():
 
-    ec2 = boto3.client("ec2", region_name="us-east-1")
-
     regions = get_regions()
 
     assert isinstance(regions, list)
