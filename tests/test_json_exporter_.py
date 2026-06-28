@@ -1,30 +1,28 @@
 from auditor.reports.json_exporter import json_export
 import json
 
+
 def test_json():
     fake_report = {
-            "ebs"  : {
-                "findings" : [
-                    {
-                        "VolumeId" : "vol-123",
-                        "Size"  : 10,
-                        "State" : "available",
-                        "Region" : "us-east-1"
-                    }
-                ]
-            },
-            "ec2" : {
-                "findings" : []
-            },
-            "eip" : {
-                "findings" : []
-            }
-        }
+        "ebs": {
+            "findings": [
+                {
+                    "VolumeId": "vol-123",
+                    "Size": 10,
+                    "State": "available",
+                    "Region": "us-east-1",
+                }
+            ]
+        },
+        "ec2": {"findings": []},
+        "eip": {"findings": []},
+    }
 
     path = json_export(fake_report)
 
     assert path.exists()
-    with open(path) as f: data = json.load(f)
+    with open(path) as f:
+        data = json.load(f)
     assert data["ebs"]["findings"][0]["VolumeId"] == "vol-123"
     assert data["ebs"]["findings"][0]["Size"] == 10
     assert data["ebs"]["findings"][0]["State"] == "available"

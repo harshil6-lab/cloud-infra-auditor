@@ -3,30 +3,32 @@ import json
 
 from auditor.reports.csv_exporter import export_csv
 
+
 def test_csv():
-     fake_report = {
-          "findings": [
-               {
-                    "resource_type" : "EBS",
-                    "resource_id" : "vol-123",
-                    "region" : "us-east-1",
-                    "status" : "Unattached",
-                    "details" : {
-                         "size_gib" : 10,
-                         "state" : "available"
-                    }
-               }
-          ]
-     }
+    fake_report = {
+        "findings": [
+            {
+                "resource_type": "EBS",
+                "resource_id": "vol-123",
+                "region": "us-east-1",
+                "status": "Unattached",
+                "details": {"size_gib": 10, "state": "available"},
+            }
+        ]
+    }
 
-     path = export_csv(fake_report)
+    path = export_csv(fake_report)
 
-     assert path.exists()
-     with open(path,newline="",encoding="utf-8") as file:
+    assert path.exists()
+    with open(path, newline="", encoding="utf-8") as file:
         reader = list(csv.reader(file))
 
         assert reader[0] == [
-            "Resource Type" , "Resource ID" , "Region" , "Status" , "Details"
+            "Resource Type",
+            "Resource ID",
+            "Region",
+            "Status",
+            "Details",
         ]
 
         assert reader[1][0] == "EBS"

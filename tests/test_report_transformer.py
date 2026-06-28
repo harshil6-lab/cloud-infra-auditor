@@ -2,31 +2,27 @@ from auditor.reports.report_transformer import transform_report
 
 
 def test_transformer():
-    #arrange A
+    # arrange A
     fake_report = {
-        "ebs"  : {
-            "findings" : [
+        "ebs": {
+            "findings": [
                 {
-                    "VolumeId" : "vol-123",
-                    "Size"  : 10,
-                    "State" : "available",
-                    "Region" : "us-east-1"
+                    "VolumeId": "vol-123",
+                    "Size": 10,
+                    "State": "available",
+                    "Region": "us-east-1",
                 }
             ]
         },
-        "ec2" : {
-            "findings" : []
-        },
-        "eip" : {
-            "findings" : []
-        }
+        "ec2": {"findings": []},
+        "eip": {"findings": []},
     }
 
-    #ACT - A
+    # ACT - A
 
     result = transform_report(fake_report)
 
-    #Assert - A
+    # Assert - A
 
     assert "findings" in result
     assert len(result["findings"]) == 1
