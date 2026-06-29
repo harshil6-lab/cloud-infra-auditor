@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloud-infra-auditor"
+version = "1.0.0"
+description = "Production-inspired AWS infrastructure auditing and cost optimization CLI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+
+authors = [
+    { name = "Harshil Kalsariya" }
+]
+
+keywords = [
+    "aws",
+    "boto3",
+    "devops",
+    "finops",
+    "cloud",
+    "cli",
+    "automation",
+    "python"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent"
+]
+
+dependencies = [
+    "boto3>=1.40",
+    "typer>=0.16",
+    "rich>=14.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.1",
+    "moto>=5.1",
+    "black>=25.1",
+    "ruff>=0.12"
+]
+
+[project.scripts]
+cloud-auditor = "auditor.cli.main:app"
+
+[tool.setuptools.packages.find]
+include = ["auditor*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
