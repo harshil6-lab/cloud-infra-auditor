@@ -458,7 +458,9 @@ Real AWS calls in tests are slow, costly, and non-deterministic. Moto provides a
 
 **Harshil Kalsariya**
 [github.com/harshil6-lab](https://github.com/harshil6-lab)
+
 **Sravya Maddipati**
+[github.com/sravya-77](https://github.com/sravya-77)
 
 ---
 
