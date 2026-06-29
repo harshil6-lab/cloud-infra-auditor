@@ -13,8 +13,6 @@ app.add_typer(report_app, name="report")
 app.add_typer(cleanup_app, name="cleanup")
 app.add_typer(auth_app, name="auth")
 app.add_typer(aws_app, name="aws")
-app.add_typer(report_app, name="report")
-app.add_typer(cleanup_app, name="cleanup")
 
 if __name__ == "__main__":
     app()
