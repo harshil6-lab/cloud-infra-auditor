@@ -13,6 +13,8 @@ venv\Scripts\activate
 pip install -e ".[dev]"
 
 aws configure
+For detailed AWS credential setup and IAM configuration, see:
+- **[AWS Configuration Guide](docs/AWS_CONFIG.md)**
 
 cloud-auditor scan ebs
 ```

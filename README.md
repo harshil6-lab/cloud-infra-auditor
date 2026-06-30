@@ -242,7 +242,10 @@ Usage: cloud-auditor [OPTIONS] COMMAND [ARGS]...
 
 ```bash
 # Configure credentials interactively
-aws configure
+aws configure               
+
+For detailed AWS credential setup and IAM configuration, see:
+- **[AWS Configuration Guide](docs/AWS_CONFIG.md)**
 
 # Verify authentication
 aws sts get-caller-identity
