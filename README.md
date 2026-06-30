@@ -278,8 +278,8 @@ cloud-auditor scan ec2
 ### Report
 
 ```bash
-cloud-auditor report json
-cloud-auditor report csv
+cloud-auditor report export --format csv
+cloud-auditor report export --format json
 ```
 
 ### Cleanup
@@ -297,13 +297,14 @@ cloud-auditor cleanup eip --execute
 ### Auth
 
 ```bash
-cloud-auditor auth
+cloud-auditor auth identity
+cloud-auditor auth profiles
 ```
 
 ### AWS
 
 ```bash
-cloud-auditor aws
+cloud-auditor aws regions
 ```
 
 ### Help
