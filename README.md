@@ -121,12 +121,8 @@ cloud-infra-auditor/
 │   │   ├── auth.py                   # auth command
 │   │   └── aws.py                    # aws command
 │   ├── cleanup/
-│   │   ├── dry_run.py                # Dry-run preview logic
 │   │   ├── ebs_cleanup.py            # EBS volume deletion
 │   │   └── eip_cleanup.py            # Elastic IP release
-│   ├── models/
-│   │   ├── findings.py               # Finding data model
-│   │   └── resource.py               # Resource data model
 │   ├── reports/
 │   │   ├── report_generator.py       # Aggregates scan findings
 │   │   ├── report_transformer.py     # Transforms findings for export
@@ -331,7 +327,7 @@ pytest --cov=auditor --cov-report=term-missing
 
 # HTML coverage report
 pytest --cov=auditor --cov-report=html
-# Open: htmlcov/index.html
+# Open htmlcov/index.html in your browser to inspect line-by-line code coverage.
 ```
 
 **Test files:**
@@ -364,6 +360,7 @@ ruff check .
 ## Build
 
 ```bash
+pip install build
 python -m build
 ```
 
@@ -407,9 +404,6 @@ Type-annotated commands, zero boilerplate, auto-generated `--help` that stays ac
 **Why Rich?**
 Tables and progress output that degrade cleanly in CI environments. No custom rendering code.
 
-**Why a `models/` layer?**
-`findings.py` and `resource.py` define a shared schema consumed by scanners, the report pipeline, and cleanup. Adding a new exporter or scanner requires no structural changes elsewhere.
-
 **Why `report_transformer.py` separate from `report_generator.py`?**
 Generation and transformation are distinct responsibilities. `report_generator.py` aggregates raw findings; `report_transformer.py` shapes them for a specific output format. Keeping these separate makes each independently testable.
 
@@ -441,7 +435,7 @@ Real AWS calls in tests are slow, costly, and non-deterministic. Moto provides a
 [x] JSON and CSV export
 [x] Report generator and transformer
 [x] Dry-run and confirmation-gated cleanup
-[x] Pytest + Moto test coverage (11 test modules)
+[x] Pytest + Moto test coverage (11 tests)
 [x] GitHub Actions CI
 [x] pyproject.toml packaging, wheel + source dist
 [ ] Parallel scanning via ThreadPoolExecutor
