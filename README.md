@@ -442,7 +442,7 @@ Real AWS calls in tests are slow, costly, and non-deterministic. Moto provides a
 [x] GitHub Actions CI
 [x] pyproject.toml packaging, wheel + source dist
 [IN PROGRESS] Parallel scanning via ThreadPoolExecutor
-[ ] RDS idle instance detection
+[R & D] RDS idle instance detection
 [ ] S3 lifecycle analysis
 [ ] Multi-account support via assume-role
 [ ] HTML report output
