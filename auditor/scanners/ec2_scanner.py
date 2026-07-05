@@ -4,6 +4,8 @@ from auditor.utils.retry import retry_on_throttle
 from auditor.aws.regions import get_regions
 from auditor.aws.cloudwatch import get_average_cpu_utilization
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 
 def get_instances(region: str):
     session = create_session()
@@ -61,8 +63,19 @@ def scan_all_regions_ec2(profile_name=None):
     findings = []
     regions = get_regions(profile_name)
 
-    for region in regions:
-        instances = scan_idle_instances(region)
-        findings.extend(instances)
+    with ThreadPoolExecutor(max_workers=min(8, len(regions))) as executor:
+        future_to_region = {}
+
+        for region in regions:
+            future = executor.submit(scan_idle_instances, region)
+            future_to_region[future] = region
+
+        for future in as_completed(future_to_region):
+            region = future_to_region[future]
+            try:
+                idle_instances = future.result()
+                findings.extend(idle_instances)
+            except Exception as e:
+                print(f"[red]Error scanning region {region}: {e}[/red]")
 
     return {"regions_scanned": len(regions), "findings": findings}
