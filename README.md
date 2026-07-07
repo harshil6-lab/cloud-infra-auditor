@@ -25,6 +25,7 @@
   <img src="https://img.shields.io/badge/formatter-black-black.svg" alt="Black">
   <img src="https://img.shields.io/badge/CI-github%20actions-blue.svg" alt="GitHub Actions">
   <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html"><img src="https://img.shields.io/badge/AWS-boto3-orange.svg" alt="Boto3"></a>
+  <img src="https://img.shields.io/badge/release-v1.1.0-brightgreen.svg" alt="Release v1.1.0">
 </p>
 
 ---
@@ -35,6 +36,21 @@ Cloud accounts accumulate waste quietly — unattached volumes, orphaned Elastic
 
 `cloud-infra-auditor` connects to your AWS account, scans for unused and underutilized resources, and surfaces findings as a Rich terminal report, a JSON export, or a CSV. It follows a deliberate **scan → analyze → report → review → cleanup** workflow. Nothing is modified unless you explicitly confirm it.
 
+As of **v1.1.0**, multi-region scans run in parallel via a shared `ThreadPoolExecutor`-backed utility, cutting typical scan time from **60–65 seconds down to 8–10 seconds**.
+
+---
+
+## What's New in v1.1.0
+
+- **Parallel multi-region scanning** — regions are scanned concurrently instead of sequentially.
+- **Shared parallel scanning utility** (`auditor/utils/parallel.py`) — replaces duplicated concurrency logic across scanners.
+- **Rich CLI progress bar** — live progress feedback while scans run.
+- **Rich scan summary panel** (`auditor/ui/summary.py`) — a consolidated summary view after each scan.
+- **Faster execution** — scan time improved from ~60–65 seconds to ~8–10 seconds on multi-region scans.
+- **Cleaner CLI UX** — clearer output and more consistent formatting across commands.
+- **Refactored concurrency logic** — duplicated threading code consolidated into one shared module.
+- **General maintainability improvements** — clearer separation of concerns across the `auditor/` package.
+
 ---
 
 ## Features
@@ -42,14 +58,59 @@ Cloud accounts accumulate waste quietly — unattached volumes, orphaned Elastic
 | Category | Capability |
 |---|---|
 | **Scanning** | Unattached EBS volumes, unassociated Elastic IPs, underutilized EC2 instances |
+| **Concurrency** | Parallel multi-region scanning via `ThreadPoolExecutor` |
 | **Metrics** | CloudWatch-backed CPU utilization detection |
-| **Multi-region** | Scan resources across multiple AWS regions |
+| **Multi-region** | Scan resources across multiple AWS regions in parallel |
+| **CLI UX** | Rich terminal progress bar and scan summary panel |
 | **Reporting** | Rich terminal tables, JSON export, CSV export |
 | **Cleanup** | Dry-run preview; explicit `--execute` required — nothing deleted silently |
 | **Retry** | Configurable retry logic for AWS API calls |
 | **Testing** | Pytest + Moto + `unittest.mock` — no real AWS account needed |
 | **CI** | GitHub Actions pipeline |
 | **Packaging** | `pyproject.toml`, wheel + source dist, `cloud-auditor` entry point |
+
+Summary:
+
+✔ Parallel AWS region scanning
+✔ Rich terminal progress
+✔ Rich summary panel
+✔ ThreadPoolExecutor concurrency
+✔ JSON export
+✔ CSV export
+✔ Cleanup commands
+✔ Multi-region support
+✔ Installable CLI
+
+---
+
+## CLI Preview
+
+### Help Command
+
+![alt text](docs/images/image.png)
+
+### Scan EBS
+
+![alt text](docs/images/image-1.png)
+
+### Scan EC2
+
+![alt text](docs/images/image-2.png)
+
+### Scan EIP
+
+![alt text](docs/images/image-3.png)
+
+### Cleanup Example
+
+![alt text](docs/images/image-4.png)
+
+### JSON or CSV Report
+
+![alt text](docs/images/image-5.png)
+![alt text](docs/images/image-6.png)
+
+###
 
 ---
 
@@ -72,6 +133,13 @@ Cloud accounts accumulate waste quietly — unattached volumes, orphaned Elastic
           │  auditor/aws/cloudwatch.py      │
           └────────────────┬────────────────┘
                            │
+          ┌────────────────▼────────────────┐
+          │   Parallel Scan Utility         │
+          │  auditor/utils/parallel.py      │
+          │  (ThreadPoolExecutor, shared     │
+          │   across all scanners)          │
+          └────────────────┬────────────────┘
+                           │
        ┌───────────────────┼───────────────────┐
        │                   │                   │
 ┌──────▼──────┐   ┌────────▼──────┐   ┌───────▼──────┐
@@ -90,6 +158,13 @@ Cloud accounts accumulate waste quietly — unattached volumes, orphaned Elastic
           │  rich_formatter.py              │
           │  json_exporter.py               │
           │  csv_exporter.py                │
+          └────────────────┬────────────────┘
+                           │
+          ┌────────────────▼────────────────┐
+          │          UI Layer               │
+          │  auditor/ui/summary.py          │
+          │  (Rich progress bar + summary   │
+          │   panel)                        │
           └────────────────┬────────────────┘
                            │
           ┌────────────────▼────────────────┐
@@ -133,11 +208,14 @@ cloud-infra-auditor/
 │   │   ├── ebs_scanner.py            # Unattached EBS detection
 │   │   ├── eip_scanner.py            # Unassociated EIP detection
 │   │   └── ec2_scanner.py            # Underutilized EC2 detection
+│   ├── ui/
+│   │   └── summary.py                # Rich progress bar + scan summary panel
 │   ├── utils/
 │   │   ├── exceptions.py             # Custom exceptions
 │   │   ├── helpers.py                # Shared utilities
 │   │   ├── logger.py                 # Logging configuration
-│   │   └── retry.py                  # AWS API retry logic
+│   │   ├── retry.py                  # AWS API retry logic
+│   │   └── parallel.py               # Shared ThreadPoolExecutor scanning utility
 │   └── constants.py                  # Project-wide constants
 ├── tests/
 │   ├── conftest.py
@@ -157,8 +235,8 @@ cloud-infra-auditor/
 ├── reports/                          # Generated exports (gitignored)
 ├── manual_testing/
 ├── dist/
-│   ├── cloud_infra_auditor-1.0.0.tar.gz
-│   └── cloud_infra_auditor-1.0.0-py3-none-any.whl
+│   ├── cloud_infra_auditor-1.1.0.tar.gz
+│   └── cloud_infra_auditor-1.1.0-py3-none-any.whl
 ├── pyproject.toml
 ├── requirements.txt
 ├── requirements-dev.txt
@@ -274,6 +352,8 @@ cloud-auditor scan eip
 cloud-auditor scan ec2
 ```
 
+Multi-region scans now run in parallel by default, with a live Rich progress bar and a summary panel printed at the end of the scan.
+
 ### Report
 
 ```bash
@@ -371,8 +451,8 @@ Artifacts generated in `dist/`:
 
 ```
 dist/
-├── cloud_infra_auditor-1.0.0.tar.gz
-└── cloud_infra_auditor-1.0.0-py3-none-any.whl
+├── cloud_infra_auditor-1.1.0.tar.gz
+└── cloud_infra_auditor-1.1.0-py3-none-any.whl
 ```
 
 ---
@@ -385,6 +465,7 @@ dist/
 | CLI Framework | Typer | 0.16+ |
 | Cloud SDK | Boto3 | 1.40+ |
 | Terminal UI | Rich | 14.0+ |
+| Concurrency | ThreadPoolExecutor | stdlib |
 | Testing | Pytest | 9.1+ |
 | AWS Mocking | Moto | 5.1+ |
 | Mock Library | unittest.mock | stdlib |
@@ -405,7 +486,10 @@ dist/
 Type-annotated commands, zero boilerplate, auto-generated `--help` that stays accurate without maintenance.
 
 **Why Rich?**
-Tables and progress output that degrade cleanly in CI environments. No custom rendering code.
+Tables, progress bars, and summary panels that degrade cleanly in CI environments. No custom rendering code.
+
+**Why a shared `auditor/utils/parallel.py`?**
+Each scanner originally implemented its own threading logic for multi-region scans. Consolidating this into a single `ThreadPoolExecutor`-backed utility removed duplicated code and made concurrency behavior consistent and independently testable across all scanners.
 
 **Why `report_transformer.py` separate from `report_generator.py`?**
 Generation and transformation are distinct responsibilities. `report_generator.py` aggregates raw findings; `report_transformer.py` shapes them for a specific output format. Keeping these separate makes each independently testable.
@@ -441,12 +525,11 @@ Real AWS calls in tests are slow, costly, and non-deterministic. Moto provides a
 [x] Pytest + Moto test coverage (11 tests)
 [x] GitHub Actions CI
 [x] pyproject.toml packaging, wheel + source dist
-[IN PROGRESS] Parallel scanning via ThreadPoolExecutor
-[R & D] RDS idle instance detection
+[x] Parallel scanning via ThreadPoolExecutor
+[x] Rich CLI progress bar and scan summary panel
 [ ] S3 lifecycle analysis
 [ ] Multi-account support via assume-role
 [ ] HTML report output
-[ ] Docker image
 [ ] Slack / PagerDuty alerting integration
 ```
 
