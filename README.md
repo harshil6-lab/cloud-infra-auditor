@@ -461,8 +461,8 @@ Real AWS calls in tests are slow, costly, and non-deterministic. Moto provides a
 
 ## Roadmap
 
-- [ ] RDS auditing
-- [ ] S3 lifecycle analysis
+- [R&D] RDS auditing
+- [R&D] S3 lifecycle analysis
 - [ ] Security Group auditing
 - [ ] IAM auditing
 - [ ] Cost insights and estimated savings
