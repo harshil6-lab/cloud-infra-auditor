@@ -103,7 +103,7 @@ cloud-auditor cleanup ebs --execute
 
 Multi-region scans run in parallel by default, with a live Rich progress bar and a summary panel printed at the end of each scan.
 
----
+-----
 
 ## Features
 
