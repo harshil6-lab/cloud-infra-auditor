@@ -80,7 +80,7 @@ See [AWS Configuration Guide](docs/AWS_CONFIG.md) for IAM setup details.
 
 Cleanup additionally requires `ec2:ReleaseAddress` and `ec2:DeleteVolume`, invoked only after explicit `--execute` confirmation.
 
----
+----
 
 ## Quick Start
 
