@@ -21,7 +21,7 @@ For small bug fixes or documentation improvements, feel free to submit a Pull Re
 Fork the repository and clone your fork.
 
 ```bash
-git clone https://github.com/<your-username>/cloud-infra-auditor.git
+git clone https://github.com/harshil6-lab/cloud-infra-auditor.git
 cd cloud-infra-auditor
 ```
 
